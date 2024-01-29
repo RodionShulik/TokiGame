@@ -24,7 +24,7 @@ fun CategoryContent(
             onArrowClick = onArrowClick
         )
         if(categoryType=="gender"){
-            GenderCategory()
+            GenderScreenStateful()
         }else{
             Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
         }
