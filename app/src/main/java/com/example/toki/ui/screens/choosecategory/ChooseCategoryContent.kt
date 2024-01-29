@@ -2,6 +2,7 @@ package com.example.toki.ui.screens.choosecategory
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,19 +20,21 @@ import androidx.compose.ui.unit.dp
 import com.example.toki.R
 import com.example.toki.ui.theme.TokiTheme
 
-data class Category(
+data class DataCategory(
     val name: String ,
     @DrawableRes val drawable :Int
 )
-val categoryList:List<Category> = listOf(
-        Category("face" , R.drawable.face_category),
-        Category("t-shirt", R.drawable.t_shirt_category),
-        Category("pants", R.drawable.pants_category),
-        Category("gender", R.drawable.gender_category),
-        Category("hat", R.drawable.hat_category)
+val categoryList:List<DataCategory> = listOf(
+        DataCategory("face" , R.drawable.face_category),
+        DataCategory("t-shirt", R.drawable.t_shirt_category),
+        DataCategory("pants", R.drawable.pants_category),
+        DataCategory("gender", R.drawable.gender_category),
+        DataCategory("hat", R.drawable.hat_category)
 )
 @Composable
-fun ChooseCategoryContent(modifier: Modifier = Modifier) {
+fun ChooseCategoryContent(
+    modifier: Modifier = Modifier,
+    navigateToCategory :(String)->Unit={}){
     Column(modifier = modifier
         .fillMaxSize()
         .padding(8.dp),
@@ -42,7 +45,11 @@ fun ChooseCategoryContent(modifier: Modifier = Modifier) {
         ) {
             items(categoryList){ category->
                 Image(
-                    modifier = modifier.size(72.dp),
+                    modifier = modifier
+                        .size(72.dp)
+                        .clickable{
+                            navigateToCategory(category.name)
+                        },
                     painter = painterResource(id = category.drawable),
                     contentDescription = category.name)
             }

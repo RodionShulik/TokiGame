@@ -7,26 +7,42 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.toki.ui.screens.CategoryContent
+import com.example.toki.ui.screens.ChooseCategory
+import com.example.toki.ui.screens.category.CategoryContent
 import com.example.toki.ui.screens.choosecategory.ChooseCategoryContent
-
-enum class SidePaneScreen(val route: String) {
-    ChooseCategory(route = "side-pane/choose-categories"),
-    Category(route = "side-pane/category")
-}
 
 @Composable
 fun NavGraphSidePane(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
 
     NavHost(
-        modifier = modifier.fillMaxSize() ,
+        modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = SidePaneScreen.ChooseCategory.route
+        startDestination = ChooseCategory.route
     ) {
-        composable(SidePaneScreen.ChooseCategory.route) {
-            ChooseCategoryContent()
+        composable(ChooseCategory.route) {
+            ChooseCategoryContent(
+                navigateToCategory = { categoryType -> navController.navigateToCategory(categoryType) }
+            )
+        }
+
+        composable(
+            route = CategoryContent.routeWithArgs,
+            arguments = CategoryContent.arguments
+        ) {navBackStackEntry->
+            val categoryType =
+                navBackStackEntry.arguments?.getString(CategoryContent.categoryTypeArg)
+            CategoryContent(
+                onArrowClick = {navController.navigateUp()  },
+                categoryType = categoryType
+            )
         }
     }
+}
+
+private fun NavHostController.navigateToCategory(categoryType: String) {
+    this.navigate("${CategoryContent.route}/$categoryType")
 }
