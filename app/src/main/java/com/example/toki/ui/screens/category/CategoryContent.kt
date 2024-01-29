@@ -23,7 +23,11 @@ fun CategoryContent(
             modifier = modifier.align(Alignment.Start),
             onArrowClick = onArrowClick
         )
-        Text(text = (categoryType!!), style = MaterialTheme.typography.displayLarge)
+        if(categoryType=="gender"){
+            GenderCategory()
+        }else{
+            Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
+        }
     }
 }
 

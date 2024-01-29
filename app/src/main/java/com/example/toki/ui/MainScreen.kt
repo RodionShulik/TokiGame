@@ -1,4 +1,4 @@
-package com.example.toki.ui.screens
+package com.example.toki.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.R
-import com.example.toki.ui.NavGraphSidePane
 import com.example.toki.ui.theme.TokiTheme
 import my.nanihadesuka.compose.LazyColumnScrollbar
 
@@ -94,7 +93,7 @@ fun MainScreen(
             Column {
                 Text(
                     text = "TOKI",
-                    style = MaterialTheme.typography.displayLarge,
+                    style = MaterialTheme.typography.displaySmall,
                     modifier = modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
