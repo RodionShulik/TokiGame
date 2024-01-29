@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.toki.screens.MainScreen
+import com.example.toki.ui.screens.MainScreen
 import com.example.toki.ui.theme.TokiTheme
 
 class MainActivity : ComponentActivity() {

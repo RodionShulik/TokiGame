@@ -1,8 +1,9 @@
-package com.example.toki.screens
+package com.example.toki.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,7 +18,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.R
+import com.example.toki.ui.NavGraphSidePane
 import com.example.toki.ui.theme.TokiTheme
 import my.nanihadesuka.compose.LazyColumnScrollbar
 
@@ -74,7 +75,7 @@ fun MainScreen(
             painter = painterResource(id = R.drawable.settings),
             contentDescription = "Settings"
         )
-        Box(
+        Row(
             modifier = modifier
                 .fillMaxHeight()
                 .weight(1.5f)
@@ -89,14 +90,16 @@ fun MainScreen(
                     .fillMaxHeight()
                     .width(5.dp)
                     .background(Color(0XFF6c5c88))
-                    .align(Alignment.CenterStart)
             )
-            Text(
-                text = "TOKI",
-                style = MaterialTheme.typography.displayLarge,
-                modifier = modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+            Column {
+                Text(
+                    text = "TOKI",
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                SidePaneContent()
+            }
         }
     }
 }
@@ -104,7 +107,7 @@ fun MainScreen(
 
 @Composable
 fun SidePaneContent() {
-
+    NavGraphSidePane()
 }
 
 
