@@ -67,8 +67,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     //LazyColumnWithScrollBar
-    implementation(libs.androidx.lazy.column.scrollbar)
+    implementation(libs.github.lazy.column.scrollbar)
     //Navigation
     implementation(libs.androidx.navigation.compose)
+    //Color picker
+    implementation(libs.github.color.picker)
 
 }

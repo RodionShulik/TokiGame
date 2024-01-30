@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,11 +88,13 @@ fun MainScreen(
                     modifier = modifier.fillMaxSize(),
                     painter = painterResource(id = character.body?.bodyFilling?.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
+                    colorFilter = ColorFilter.tint(character.body?.bodyFilling?.color ?: Color.White)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),
                     painter = painterResource(id = character.body?.bodyContour?.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
+                    colorFilter = ColorFilter.tint(character.body?.bodyContour?.color ?: Color.Black)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),

@@ -17,7 +17,8 @@ fun CategoryContent(
     modifier:Modifier = Modifier,
     onArrowClick:()->Unit = {},
     categoryType:String? = "TEST",
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    navigateToDestination : (String) ->Unit
 ) {
     Column(modifier = modifier
         .fillMaxSize()){
@@ -26,7 +27,10 @@ fun CategoryContent(
             onArrowClick = onArrowClick
         )
         if(categoryType=="gender"){
-            GenderScreenStateful(mainViewModel = mainViewModel)
+            GenderScreenStateful(
+                mainViewModel = mainViewModel,
+                navigateToDestination = navigateToDestination
+            )
         }else{
             Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
         }
@@ -37,6 +41,9 @@ fun CategoryContent(
 @Composable
 private fun PreviewCategoryContent() {
     TokiTheme {
-        CategoryContent(mainViewModel = MainViewModel())
+        CategoryContent(
+            mainViewModel = MainViewModel(),
+            navigateToDestination = {}
+        )
     }
 }

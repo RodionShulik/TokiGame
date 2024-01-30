@@ -21,3 +21,13 @@ object CategoryContent : SidePaneDestination{
         navArgument(categoryTypeArg) { type = NavType.StringType }
     )
 }
+
+object ColorPicker : SidePaneDestination{
+    override val route = "side_pane/pick_color"
+    const val characterElementArg = "character_element"
+    val routeWithArgs = "$route/{$characterElementArg}"
+
+    val arguments = listOf(
+        navArgument(characterElementArg){ type = NavType.StringType}
+    )
+}

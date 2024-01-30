@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,20 +27,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.R
 import com.example.toki.ui.MainViewModel
+import com.example.toki.ui.compositions.ColorTile
 import com.example.toki.ui.theme.TokiTheme
 
 
 @Composable
-fun GenderScreenStateful(mainViewModel: MainViewModel) {
+fun GenderScreenStateful(
+    mainViewModel: MainViewModel,
+    navigateToDestination: (String) ->Unit
+) {
     var selectedCard by rememberSaveable {
         mutableStateOf<String>("")
     }
+    val contourColor = mainViewModel.character.collectAsState().value.body.bodyContour.color
+    val fillingColor = mainViewModel.character.collectAsState().value.body.bodyFilling.color
     GenderScreenStateless(
         selectedCard = selectedCard,
         onSelectedCardClick = { gender ->
             selectedCard = gender
             mainViewModel.setBody(gender)
                               },
+        navigateToDestination = navigateToDestination,
+        contourColor = contourColor,
+        fillingColor = fillingColor
     )
 }
 
@@ -47,27 +57,45 @@ fun GenderScreenStateful(mainViewModel: MainViewModel) {
 fun GenderScreenStateless(
     modifier: Modifier = Modifier,
     selectedCard: String,
-    onSelectedCardClick: (String) -> Unit
+    onSelectedCardClick: (String) -> Unit,
+    navigateToDestination: (String) ->Unit,
+    contourColor:Color,
+    fillingColor:Color
 ) {
-    Row(modifier = modifier.fillMaxSize()) {
+        Column(modifier = modifier.fillMaxSize()) {
+            Row(modifier = modifier) {
+                GenderCard(
+                    modifier = modifier.weight(0.5f),
+                    label = R.drawable.female_card_label,
+                    content = R.drawable.female_card_content,
+                    contentDescription = "female",
+                    selectedCard = selectedCard,
+                    onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+                )
+                GenderCard(
+                    modifier = modifier.weight(0.5f),
+                    label = R.drawable.male_card_label,
+                    content = R.drawable.male_card_content,
+                    contentDescription = "male",
+                    selectedCard = selectedCard,
+                    onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+                )
+            }
+            Row(
+                modifier = modifier,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ){
+                ColorTile(
+                    color = fillingColor,
+                    navigateToDestination = {navigateToDestination("body_contour")}
+                )
+                ColorTile(
+                    color = contourColor,
+                    navigateToDestination = {navigateToDestination("body_filling")}
+                )
+            }
 
-        GenderCard(
-            modifier = modifier.weight(0.5f),
-            label = R.drawable.female_card_label,
-            content = R.drawable.female_card_content,
-            contentDescription = "female",
-            selectedCard = selectedCard,
-            onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
-        )
-        GenderCard(
-            modifier = modifier.weight(0.5f),
-            label = R.drawable.male_card_label,
-            content = R.drawable.male_card_content,
-            contentDescription = "male",
-            selectedCard = selectedCard,
-            onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
-        )
-    }
+        }
 }
 
 @Composable
@@ -94,7 +122,7 @@ fun GenderCard(
 
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -123,6 +151,9 @@ fun GenderCard(
 @Composable
 private fun PreviewGenderCategory() {
     TokiTheme {
-        GenderScreenStateful(mainViewModel = MainViewModel())
+        GenderScreenStateful(
+            mainViewModel = MainViewModel(),
+            navigateToDestination = {}
+        )
     }
 }
