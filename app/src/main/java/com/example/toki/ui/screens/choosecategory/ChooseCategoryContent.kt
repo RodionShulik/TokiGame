@@ -7,13 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,18 +40,20 @@ fun ChooseCategoryContent(
         .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(72.dp),
+            modifier = modifier.fillMaxSize(),
+            columns = GridCells.Fixed(3),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(categoryList){ category->
                 Image(
                     modifier = modifier
-                        .size(72.dp)
+                        .fillMaxSize()
                         .clickable{
                             navigateToCategory(category.name)
                         },
                     painter = painterResource(id = category.drawable),
-                    contentDescription = category.name)
+                    contentDescription = category.name,
+                    contentScale = ContentScale.Inside)
             }
         }
     }

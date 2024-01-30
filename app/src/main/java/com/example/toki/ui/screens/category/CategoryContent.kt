@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.toki.ui.MainViewModel
 import com.example.toki.ui.compositions.ArrowBackImageButton
 import com.example.toki.ui.theme.TokiTheme
 
@@ -15,7 +16,8 @@ import com.example.toki.ui.theme.TokiTheme
 fun CategoryContent(
     modifier:Modifier = Modifier,
     onArrowClick:()->Unit = {},
-    categoryType:String? = "TEST"
+    categoryType:String? = "TEST",
+    mainViewModel: MainViewModel
 ) {
     Column(modifier = modifier
         .fillMaxSize()){
@@ -24,7 +26,7 @@ fun CategoryContent(
             onArrowClick = onArrowClick
         )
         if(categoryType=="gender"){
-            GenderScreenStateful()
+            GenderScreenStateful(mainViewModel = mainViewModel)
         }else{
             Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
         }
@@ -35,6 +37,6 @@ fun CategoryContent(
 @Composable
 private fun PreviewCategoryContent() {
     TokiTheme {
-        CategoryContent()
+        CategoryContent(mainViewModel = MainViewModel())
     }
 }

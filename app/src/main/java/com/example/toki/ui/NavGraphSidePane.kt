@@ -15,7 +15,8 @@ import com.example.toki.ui.screens.choosecategory.ChooseCategoryContent
 @Composable
 fun NavGraphSidePane(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    mainViewModel: MainViewModel
 ) {
 
     NavHost(
@@ -37,7 +38,8 @@ fun NavGraphSidePane(
                 navBackStackEntry.arguments?.getString(CategoryContent.categoryTypeArg)
             CategoryContent(
                 onArrowClick = {navController.navigateUp()  },
-                categoryType = categoryType
+                categoryType = categoryType,
+                mainViewModel = mainViewModel
             )
         }
     }

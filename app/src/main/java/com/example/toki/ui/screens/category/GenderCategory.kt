@@ -10,7 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,21 +20,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.R
+import com.example.toki.ui.MainViewModel
 import com.example.toki.ui.theme.TokiTheme
 
 
 @Composable
-fun GenderScreenStateful() {
+fun GenderScreenStateful(mainViewModel: MainViewModel) {
     var selectedCard by rememberSaveable {
         mutableStateOf<String>("")
     }
     GenderScreenStateless(
         selectedCard = selectedCard,
-        onSelectedCardClick = {gender->selectedCard=gender}
+        onSelectedCardClick = { gender ->
+            selectedCard = gender
+            mainViewModel.setBody(gender)
+                              },
     )
 }
 
@@ -44,42 +49,42 @@ fun GenderScreenStateless(
     selectedCard: String,
     onSelectedCardClick: (String) -> Unit
 ) {
-        Row(modifier = modifier
-            .fillMaxWidth()){
-            
-            GenderCard(
-                modifier = modifier
-                    .weight(0.5f),
-                label = R.drawable.female_card_label ,
-                content = R.drawable.female_card_content,
-                contentDescription = "female",
-                selectedCard = selectedCard,
-                onSelectedCardClick ={gender-> onSelectedCardClick(gender) }
-            )
-            GenderCard(
-                modifier = modifier.weight(0.5f),
-                label = R.drawable.male_card_label ,
-                content = R.drawable.male_card_content,
-                contentDescription = "male",
-                selectedCard = selectedCard,
-                onSelectedCardClick ={gender-> onSelectedCardClick(gender) }
-            )
-        }
+    Row(modifier = modifier.fillMaxSize()) {
+
+        GenderCard(
+            modifier = modifier.weight(0.5f),
+            label = R.drawable.female_card_label,
+            content = R.drawable.female_card_content,
+            contentDescription = "female",
+            selectedCard = selectedCard,
+            onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+        )
+        GenderCard(
+            modifier = modifier.weight(0.5f),
+            label = R.drawable.male_card_label,
+            content = R.drawable.male_card_content,
+            contentDescription = "male",
+            selectedCard = selectedCard,
+            onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+        )
+    }
 }
 
 @Composable
 fun GenderCard(
     modifier: Modifier = Modifier,
-    @DrawableRes label : Int ,
-    @DrawableRes content :Int,
-    contentDescription : String,
-    selectedCard : String = "",
+    @DrawableRes label: Int,
+    @DrawableRes content: Int,
+    contentDescription: String,
+    selectedCard: String = "",
     onSelectedCardClick: (String) -> Unit
 ) {
     val borderDp by animateDpAsState(
-        if(selectedCard == contentDescription){
+        if (selectedCard == contentDescription) {
             6.dp
-        }else { (-1).dp },
+        } else {
+            (-1).dp
+        },
         label = "Width border",
         animationSpec = tween(
             durationMillis = 400,
@@ -89,12 +94,12 @@ fun GenderCard(
 
 
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Image(
-            painter = painterResource(id = label ),
+            painter = painterResource(id = label),
             contentDescription = contentDescription
         )
         Image(
@@ -107,8 +112,9 @@ fun GenderCard(
                 .clickable {
                     onSelectedCardClick(contentDescription)
                 },
-            painter = painterResource(id = content ),
-            contentDescription = contentDescription
+            painter = painterResource(id = content),
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Fit
         )
     }
 }
@@ -117,6 +123,6 @@ fun GenderCard(
 @Composable
 private fun PreviewGenderCategory() {
     TokiTheme {
-        GenderScreenStateful()
+        GenderScreenStateful(mainViewModel = MainViewModel())
     }
 }
