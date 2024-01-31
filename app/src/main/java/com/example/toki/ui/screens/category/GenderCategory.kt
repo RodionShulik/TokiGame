@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,7 +38,7 @@ fun GenderScreenStateful(
     navigateToDestination: (String) ->Unit
 ) {
     var selectedCard by rememberSaveable {
-        mutableStateOf<String>("")
+        mutableStateOf<String>("female")
     }
     val contourColor = mainViewModel.character.collectAsState().value.body.bodyContour.color
     val fillingColor = mainViewModel.character.collectAsState().value.body.bodyFilling.color
@@ -82,16 +83,16 @@ fun GenderScreenStateless(
                 )
             }
             Row(
-                modifier = modifier,
+                modifier = modifier.padding(start = 16.dp , top = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
                 ColorTile(
                     color = fillingColor,
-                    navigateToDestination = {navigateToDestination("body_contour")}
+                    navigateToDestination = {navigateToDestination("body_filling")}
                 )
                 ColorTile(
                     color = contourColor,
-                    navigateToDestination = {navigateToDestination("body_filling")}
+                    navigateToDestination = {navigateToDestination("body_contour")}
                 )
             }
 

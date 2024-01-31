@@ -72,5 +72,4 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     //Color picker
     implementation(libs.github.color.picker)
-
 }

@@ -1,5 +1,6 @@
 package com.example.toki.ui
 
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +13,7 @@ import com.example.toki.ui.screens.ChooseCategory
 import com.example.toki.ui.screens.ColorPicker
 import com.example.toki.ui.screens.category.CategoryContent
 import com.example.toki.ui.screens.choosecategory.ChooseCategoryContent
-import com.example.toki.ui.screens.colorpicker.ColorPickerScreen
+import com.example.toki.ui.screens.colorpicker.ColorPickerScreenStateful
 
 @Composable
 fun NavGraphSidePane(
@@ -24,7 +25,10 @@ fun NavGraphSidePane(
     NavHost(
         modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = ChooseCategory.route
+        startDestination = ChooseCategory.route,
+        exitTransition = {
+            ExitTransition.None
+        }
     ) {
         composable(ChooseCategory.route) {
             ChooseCategoryContent(
@@ -52,7 +56,7 @@ fun NavGraphSidePane(
         ){navBackStackEntry->
             val characterElement =
                 navBackStackEntry.arguments?.getString(ColorPicker.characterElementArg)
-            ColorPickerScreen(
+            ColorPickerScreenStateful(
                 onArrowClick ={navController.navigateUp()  },
                 mainViewModel = mainViewModel ,
                 characterElement = characterElement

@@ -1,5 +1,7 @@
 package com.example.toki.ui
 
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,7 +20,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -36,6 +40,13 @@ fun MainScreen(
     listState: LazyListState,
     viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+//    val color1 = viewModel.character.collectAsState().value.body.bodyFilling.color
+    val color1 = remember{
+        Animatable(viewModel.character.value.body.bodyFilling.color)
+    }
+    LaunchedEffect(key1 = Unit) {
+        color1.animateTo(Color.Green , animationSpec = tween(500))
+    }
     val character = viewModel.character.collectAsState().value
     Row(modifier = Modifier.fillMaxSize()) {
 
@@ -86,19 +97,19 @@ fun MainScreen(
             Box {
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body?.bodyFilling?.element ?: R.drawable.empty_drawable),
+                    painter = painterResource(id = character.body.bodyFilling.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(character.body?.bodyFilling?.color ?: Color.White)
+                    colorFilter = ColorFilter.tint(character.body.bodyFilling.color)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body?.bodyContour?.element ?: R.drawable.empty_drawable),
+                    painter = painterResource(id = character.body.bodyContour.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(character.body?.bodyContour?.color ?: Color.Black)
+                    colorFilter = ColorFilter.tint(character.body.bodyContour.color ?: Color.Black)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body?.press?.element ?: R.drawable.empty_drawable),
+                    painter = painterResource(id = character.body.press?.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
                 )
             }

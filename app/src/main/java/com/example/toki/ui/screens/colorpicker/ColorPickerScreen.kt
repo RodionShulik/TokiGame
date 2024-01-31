@@ -8,32 +8,61 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.ui.MainViewModel
 import com.example.toki.ui.compositions.ArrowBackImageButton
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
+import com.github.skydoves.colorpicker.compose.ColorPickerController
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 
-
-// TODO: make stateles version
 @Composable
-fun ColorPickerScreen(
-    modifier:Modifier= Modifier,
+fun ColorPickerScreenStateful(
     onArrowClick:()->Unit,
     mainViewModel: MainViewModel,
     characterElement: String?
-) {
+){
     val controller = rememberColorPickerController()
+    val currentColor = mainViewModel.colorFlow.collectAsState()
+        ColorPickerScreenStateless(
+            onArrowClick = {onArrowClick()},
+            initialColor = currentColor.value,
+            onColorChanged = {
+                    colorEnvelope ->
+                mainViewModel.changeElementColor(colorEnvelope.color,characterElement ?: "body_contour")
+            },
+            getColor = {mainViewModel.getColor(characterElement)},
+            controller = controller
+        )
+}
+// TODO: make stateles version
+@Composable
+fun ColorPickerScreenStateless(
+    modifier:Modifier= Modifier,
+    onArrowClick:()->Unit,
+    initialColor : Color,
+    onColorChanged : (ColorEnvelope) -> Unit,
+    getColor : () -> Unit,
+    controller :ColorPickerController
+) {
+
+    LaunchedEffect(key1 = Unit) {
+        getColor()
+    }
     Column(modifier = modifier.fillMaxSize()) {
         Row(
             modifier = modifier
-                .align(Alignment.Start)
+                .fillMaxWidth()
                 .weight(0.1f)
+                .align(Alignment.Start)
         ){
             ArrowBackImageButton(
                 onArrowClick = onArrowClick
@@ -41,25 +70,21 @@ fun ColorPickerScreen(
             Text(text = "Choose color", style = MaterialTheme.typography.titleLarge)
         }
         HsvColorPicker(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-                .weight(0.5f)
-                .padding(10.dp),
-            controller = controller,
-            onColorChanged = { colorEnvelope: ColorEnvelope ->
-                mainViewModel.changeElementColor(
-                    color = colorEnvelope.color,
-                    element = characterElement ?: "body_contour"
-                )
+                .weight(0.5f) ,
+            controller =controller,
+            onColorChanged = {
+                colorEnvelope ->
+                onColorChanged(colorEnvelope)
             },
-//todo make initialColor
+            initialColor = initialColor
         )
         AlphaSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .weight(0.2f)
-            ,
+                .weight(0.2f),
             controller = controller,
         )
         BrightnessSlider(
@@ -69,12 +94,12 @@ fun ColorPickerScreen(
                 .weight(0.2f),
             controller = controller,
         )
-//        AlphaTile(
-//            modifier = Modifier
-//                .weight(0.1f)
-//                .clip(RoundedCornerShape(6.dp)),
-//            controller = controller
-//        )
-
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun PrevColorPicker() {
+    ColorPickerScreenStateful(onArrowClick = { /*TODO*/ }, mainViewModel = MainViewModel(), characterElement = "body_contour" )
 }
