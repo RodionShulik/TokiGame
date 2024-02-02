@@ -1,6 +1,5 @@
 package com.example.toki.ui
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,8 +14,6 @@ class MainViewModel :ViewModel() {
     private var _character = MutableStateFlow<Character>(Character())
     val character = _character.asStateFlow()
 
-    private var _colorFLow = MutableStateFlow(Color.Transparent)
-    val colorFlow = _colorFLow.asStateFlow()
     fun setBody(gender:String){
         if(gender=="female"){
             _character.value = _character.value.copy(
@@ -60,15 +57,5 @@ class MainViewModel :ViewModel() {
             }
         }
 
-    }
-    fun getColor (element: String?){
-        when(element){
-
-            "body_contour" -> _colorFLow.value = _character.value.body.bodyContour.color
-            "body_filling" -> _colorFLow.value = _character.value.body.bodyFilling.color
-
-            else->_colorFLow.value = _character.value.body.bodyContour.color
-        }
-        Log.d("color_test", "FLOW:${_colorFLow.value}")
     }
 }

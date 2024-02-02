@@ -10,8 +10,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,7 +41,7 @@ import com.example.toki.ui.theme.TokiTheme
 @Composable
 fun GenderScreenStateful(
     mainViewModel: MainViewModel,
-    navigateToDestination: (String) ->Unit
+    navigateToDestination: (String) -> Unit
 ) {
     var selectedCard by rememberSaveable {
         mutableStateOf<String>("female")
@@ -47,7 +53,7 @@ fun GenderScreenStateful(
         onSelectedCardClick = { gender ->
             selectedCard = gender
             mainViewModel.setBody(gender)
-                              },
+        },
         navigateToDestination = navigateToDestination,
         contourColor = contourColor,
         fillingColor = fillingColor
@@ -59,44 +65,52 @@ fun GenderScreenStateless(
     modifier: Modifier = Modifier,
     selectedCard: String,
     onSelectedCardClick: (String) -> Unit,
-    navigateToDestination: (String) ->Unit,
-    contourColor:Color,
-    fillingColor:Color
+    navigateToDestination: (String) -> Unit,
+    contourColor: Color,
+    fillingColor: Color
 ) {
-        Column(modifier = modifier.fillMaxSize()) {
-            Row(modifier = modifier) {
-                GenderCard(
-                    modifier = modifier.weight(0.5f),
-                    label = R.drawable.female_card_label,
-                    content = R.drawable.female_card_content,
-                    contentDescription = "female",
-                    selectedCard = selectedCard,
-                    onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
-                )
-                GenderCard(
-                    modifier = modifier.weight(0.5f),
-                    label = R.drawable.male_card_label,
-                    content = R.drawable.male_card_content,
-                    contentDescription = "male",
-                    selectedCard = selectedCard,
-                    onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
-                )
-            }
-            Row(
-                modifier = modifier.padding(start = 16.dp , top = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                ColorTile(
-                    color = fillingColor,
-                    navigateToDestination = {navigateToDestination("body_filling")}
-                )
-                ColorTile(
-                    color = contourColor,
-                    navigateToDestination = {navigateToDestination("body_contour")}
-                )
-            }
-
+    Column(modifier = modifier.fillMaxSize()) {
+        Row(modifier = modifier.weight(0.8f)) {
+            GenderCard(
+                modifier = modifier.weight(0.5f),
+                label = R.drawable.female_card_label,
+                content = R.drawable.female_card_content,
+                contentDescription = "female",
+                selectedCard = selectedCard,
+                onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+            )
+        GenderCard(
+            modifier = modifier
+                .weight(0.5f),
+            label = R.drawable.male_card_label,
+            content = R.drawable.male_card_content,
+            contentDescription = "male",
+            selectedCard = selectedCard,
+            onSelectedCardClick = { gender -> onSelectedCardClick(gender) }
+        )
         }
+        LazyVerticalGrid(
+            modifier = Modifier.weight(0.2f).padding(start = 8.dp),
+            columns = GridCells.Fixed(5),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            item {
+                ColorTile(
+                    modifier = Modifier.aspectRatio(1f),
+                    color = fillingColor,
+                    navigateToDestination = { navigateToDestination("body_filling") }
+                )
+
+            }
+            item{
+                ColorTile(
+                    modifier = Modifier.aspectRatio(1f),
+                    color = contourColor,
+                    navigateToDestination = { navigateToDestination("body_contour") }
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -123,28 +137,39 @@ fun GenderCard(
 
 
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Image(
+            modifier = Modifier.fillMaxWidth().weight(0.15f),
             painter = painterResource(id = label),
             contentDescription = contentDescription
         )
-        Image(
+        Card(
             modifier = Modifier
+                .weight(0.85f)
+                .fillMaxWidth()
                 .border(
                     width = borderDp,
                     color = Color(0xFF07e0b1),
-                    shape = MaterialTheme.shapes.small
+                    shape = MaterialTheme.shapes.medium
                 )
                 .clickable {
                     onSelectedCardClick(contentDescription)
                 },
-            painter = painterResource(id = content),
-            contentDescription = contentDescription,
-            contentScale = ContentScale.Fit
-        )
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF5b4b8a)
+            ),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = content),
+                contentDescription = contentDescription,
+                contentScale = ContentScale.Fit
+            )
+        }
     }
 }
 

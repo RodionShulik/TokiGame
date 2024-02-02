@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +17,7 @@ fun ColorTile(
     navigateToDestination: () ->Unit,
 ) {
     Box(modifier = modifier
-        .size(36.dp)
+        .fillMaxSize()
         .background(color)
         .border(width = 2.dp, color = Color.Black)
         .clickable {

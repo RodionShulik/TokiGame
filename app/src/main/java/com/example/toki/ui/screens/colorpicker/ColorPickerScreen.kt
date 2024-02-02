@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.ui.MainViewModel
@@ -31,15 +28,12 @@ fun ColorPickerScreenStateful(
     characterElement: String?
 ){
     val controller = rememberColorPickerController()
-    val currentColor = mainViewModel.colorFlow.collectAsState()
         ColorPickerScreenStateless(
             onArrowClick = {onArrowClick()},
-            initialColor = currentColor.value,
             onColorChanged = {
                     colorEnvelope ->
                 mainViewModel.changeElementColor(colorEnvelope.color,characterElement ?: "body_contour")
             },
-            getColor = {mainViewModel.getColor(characterElement)},
             controller = controller
         )
 }
@@ -48,20 +42,14 @@ fun ColorPickerScreenStateful(
 fun ColorPickerScreenStateless(
     modifier:Modifier= Modifier,
     onArrowClick:()->Unit,
-    initialColor : Color,
     onColorChanged : (ColorEnvelope) -> Unit,
-    getColor : () -> Unit,
     controller :ColorPickerController
 ) {
-
-    LaunchedEffect(key1 = Unit) {
-        getColor()
-    }
     Column(modifier = modifier.fillMaxSize()) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .weight(0.1f)
+                .weight(0.2f)
                 .align(Alignment.Start)
         ){
             ArrowBackImageButton(
@@ -72,26 +60,25 @@ fun ColorPickerScreenStateless(
         HsvColorPicker(
             modifier = modifier
                 .fillMaxWidth()
-                .weight(0.5f) ,
+                .weight(0.4f) ,
             controller =controller,
             onColorChanged = {
                 colorEnvelope ->
                 onColorChanged(colorEnvelope)
             },
-            initialColor = initialColor
         )
         AlphaSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .weight(0.2f),
+                .weight(0.1f),
             controller = controller,
         )
         BrightnessSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .weight(0.2f),
+                .weight(0.1f),
             controller = controller,
         )
     }
