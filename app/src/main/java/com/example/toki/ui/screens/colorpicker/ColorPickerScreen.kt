@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,17 +28,16 @@ fun ColorPickerScreenStateful(
     mainViewModel: MainViewModel,
     characterElement: String?
 ){
-    val controller = rememberColorPickerController()
-        ColorPickerScreenStateless(
+    val controller = rememberColorPickerController();
+    ColorPickerScreenStateless(
             onArrowClick = {onArrowClick()},
             onColorChanged = {
                     colorEnvelope ->
                 mainViewModel.changeElementColor(colorEnvelope.color,characterElement ?: "body_contour")
             },
             controller = controller
-        )
+    )
 }
-// TODO: make stateles version
 @Composable
 fun ColorPickerScreenStateless(
     modifier:Modifier= Modifier,
@@ -49,7 +49,6 @@ fun ColorPickerScreenStateless(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .weight(0.2f)
                 .align(Alignment.Start)
         ){
             ArrowBackImageButton(
@@ -70,15 +69,15 @@ fun ColorPickerScreenStateless(
         AlphaSlider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
-                .weight(0.1f),
+                .padding(vertical = 2.dp, horizontal = 8.dp)
+                .height(32.dp),
             controller = controller,
         )
         BrightnessSlider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
-                .weight(0.1f),
+                .padding(vertical = 2.dp, horizontal = 8.dp)
+                .height(32.dp),
             controller = controller,
         )
     }

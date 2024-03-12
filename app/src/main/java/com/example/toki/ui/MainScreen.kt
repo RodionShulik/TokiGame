@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -40,9 +41,8 @@ fun MainScreen(
     listState: LazyListState,
     viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-//    val color1 = viewModel.character.collectAsState().value.body.bodyFilling.color
     val color1 = remember{
-        Animatable(viewModel.character.value.body.bodyFilling.color)
+        Animatable(viewModel.character.value.body.fillingPart.color)
     }
     LaunchedEffect(key1 = Unit) {
         color1.animateTo(Color.Green , animationSpec = tween(500))
@@ -97,20 +97,43 @@ fun MainScreen(
             Box {
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body.bodyFilling.element ?: R.drawable.empty_drawable),
+                    painter = painterResource(id = character.body.fillingPart.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(character.body.bodyFilling.color)
+                    colorFilter = ColorFilter.tint(character.body.fillingPart.color)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body.bodyContour.element ?: R.drawable.empty_drawable),
+                    painter = painterResource(id = character.body.contourPart.element ?: R.drawable.empty_drawable),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(character.body.bodyContour.color ?: Color.Black)
+                    colorFilter = ColorFilter.tint(character.body.contourPart.color ?: Color.Black)
+                )
+                Image(
+                    modifier = modifier.fillMaxSize().alpha(0.2f),
+                    painter = painterResource(id = character.bodyShadow.element ?: R.drawable.empty_drawable),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.Gray)
                 )
                 Image(
                     modifier = modifier.fillMaxSize(),
-                    painter = painterResource(id = character.body.press?.element ?: R.drawable.empty_drawable),
+                    painter =  painterResource(id = character.baseHair.fillingPart.element),
                     contentDescription = null,
+                    colorFilter = ColorFilter.tint(character.baseHair.fillingPart.color)
+                )
+                Image(
+                    modifier = modifier.fillMaxSize(),
+                    painter =  painterResource(id = character.baseHair.contourPart.element),
+                    contentDescription = null
+                )
+                Image(
+                    modifier = modifier.fillMaxSize(),
+                    painter =  painterResource(id = character.bangs.fillingPart.element),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(character.bangs.fillingPart.color)
+                )
+                Image(
+                    modifier = modifier.fillMaxSize(),
+                    painter =  painterResource(id = character.bangs.contourPart.element),
+                    contentDescription = null
                 )
             }
         }

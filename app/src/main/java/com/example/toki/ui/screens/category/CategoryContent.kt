@@ -26,13 +26,17 @@ fun CategoryContent(
             modifier = modifier.align(Alignment.Start),
             onArrowClick = onArrowClick
         )
-        if(categoryType=="gender"){
-            GenderScreenStateful(
+        when(categoryType){
+            "gender" -> GenderScreenStateful(
                 mainViewModel = mainViewModel,
                 navigateToDestination = navigateToDestination
             )
-        }else{
-            Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
+            "face" -> FaceScreen(
+                mainViewModel = mainViewModel,
+                navigateToDestination = navigateToDestination
+            )
+            else -> Text(text = categoryType!! , style = MaterialTheme.typography.displayLarge)
+
         }
     }
 }

@@ -46,8 +46,8 @@ fun GenderScreenStateful(
     var selectedCard by rememberSaveable {
         mutableStateOf<String>("female")
     }
-    val contourColor = mainViewModel.character.collectAsState().value.body.bodyContour.color
-    val fillingColor = mainViewModel.character.collectAsState().value.body.bodyFilling.color
+    val contourColor = mainViewModel.character.collectAsState().value.body.contourPart.color
+    val fillingColor = mainViewModel.character.collectAsState().value.body.fillingPart.color
     GenderScreenStateless(
         selectedCard = selectedCard,
         onSelectedCardClick = { gender ->

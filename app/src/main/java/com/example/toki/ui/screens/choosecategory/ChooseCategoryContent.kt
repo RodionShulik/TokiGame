@@ -10,27 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toki.R
+import com.example.toki.data.categoryList
 import com.example.toki.ui.theme.TokiTheme
 
-data class DataCategory(
-    val name: String ,
-    @DrawableRes val drawable :Int
-)
-val categoryList:List<DataCategory> = listOf(
-        DataCategory("face" , R.drawable.face_category),
-        DataCategory("t-shirt", R.drawable.t_shirt_category),
-        DataCategory("pants", R.drawable.pants_category),
-        DataCategory("gender", R.drawable.gender_category),
-        DataCategory("hat", R.drawable.hat_category)
-)
 @Composable
 fun ChooseCategoryContent(
     modifier: Modifier = Modifier,
@@ -40,20 +32,22 @@ fun ChooseCategoryContent(
         .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
         LazyVerticalGrid(
-            modifier = modifier.fillMaxSize(),
             columns = GridCells.Fixed(3),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(categoryList){ category->
                 Image(
                     modifier = modifier
-                        .fillMaxSize()
+                        .clip(
+                            RoundedCornerShape(16.dp)
+                        )
                         .clickable{
                             navigateToCategory(category.name)
                         },
                     painter = painterResource(id = category.drawable),
                     contentDescription = category.name,
-                    contentScale = ContentScale.Inside)
+                    contentScale = ContentScale.Inside
+                )
             }
         }
     }

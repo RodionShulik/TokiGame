@@ -18,9 +18,9 @@ fun ArrowBackImageButton(
 ) {
     Image(
         modifier = modifier
-            .width(64.dp)
-            .height(40.dp)
-            .padding(start = 8.dp)
+            .width(48.dp)
+            .height(32.dp)
+            .padding(start = 4.dp)
             .clickable {
                 onArrowClick()
             },
